@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎯 JS Event Playground</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f8ff;
+    }
+
+    button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #changeBtn.clicked {
+      background: hotpink;
+      color: white;
+    }
+
+    .tab-content {
+      margin-top: 10px;
+      padding: 10px;
+      background: #eee;
+    }
+
+    #formFeedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Interactive JS Playground</h1>
+
+  <button id="changeBtn">Click Me!</button>
+  <p id="hoverText">Hover over me!</p>
+  <input type="text" id="keyInput" placeholder="Type something...">
+  <p id="secretAction">Double-click me!</p>
+
+  <div class="tabs">
+    <button class="tab" data-tab="1">Tab 1</button>
+    <button class="tab" data-tab="2">Tab 2</button>
+    <div class="tab-content" id="tab-1">Content for Tab 1</div>
+    <div class="tab-content" id="tab-2" style="display:none;">Content for Tab 2</div>
+  </div>
+
+  <form id="signupForm">
+    <input type="text" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password (min 8 chars)" required>
+    <button type="submit">Sign Up</button>
+    <p id="formFeedback"></p>
+  </form>
+
+  <script>
+    // Button click
+    document.getElementById("changeBtn").addEventListener("click", function () {
+      this.textContent = "Clicked!";
+      this.classList.toggle("clicked");
+    });
+
+    // Hover effects
+    document.getElementById("hoverText").addEventListener("mouseover", function () {
+      this.textContent = "You're hovering!";
+    });
+    document.getElementById("hoverText").addEventListener("mouseout", function () {
+      this.textContent = "Hover over me!";
+    });
+
+    // Keypress detection
+    document.getElementById("keyInput").addEventListener("keyup", function (e) {
+      console.log("You typed: ", e.key);
+    });
+
+    // Secret double-click
+    document.getElementById("secretAction").addEventListener("dblclick", function () {
+      alert("✨ Secret Unlocked!");
+    });
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", function () {
+        const tabNum = this.getAttribute("data-tab");
+        document.querySelectorAll(".tab-content").forEach(content => {
+          content.style.display = "none";
+        });
+        document.getElementById(`tab-${tabNum}`).style.display = "block";
+      });
+    });
+
+    // Form validation
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const feedback = document.getElementById("formFeedback");
+
+      const emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+      const passValid = password.length >= 8;
+
+      if (!emailValid) {
+        feedback.textContent = "❌ Invalid email format.";
+        feedback.style.color = "red";
+      } else if (!passValid) {
+        feedback.textContent = "❌ Password must be at least 8 characters.";
+        feedback.style.color = "red";
+      } else {
+        feedback.textContent = "✅ Form looks good!";
+        feedback.style.color = "green";
+      }
+    });
+  </script>
+</body>
+</html>
